@@ -1,0 +1,125 @@
+* {
+-webkit-box-sizing:border-box;
+-moz-box-sizing:border-box;
+-box-sizing:border-box;
+}
+
+html {
+    font-size:100%;
+    overflow-y:scroll;
+    -ms-text-size-adjust:100%;
+    -webkit-text-size-adjust:none;
+}
+
+.row {
+  width: 100%;
+  margin-bottom: 10px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.col-3 {
+    width: 25%;
+    background-color:  #0d0d0d;
+}
+
+.col-9 {
+    width: 75%;
+    background-color: #333300;
+}
+
+#map {
+    height:636px;
+}
+
+.location-search {
+    padding: 30px 0 0 8px;
+    font-family:Georgia, Helvetica, sans;
+    font-size:18px;
+}
+
+p {
+    padding-left: 5px;
+    font-family:Georgia, Helvetica, sans;
+    color:#99ccff;
+    font-size:25px;
+}
+
+ul {
+    list-style-type:none;
+    display:flex;
+    flex-direction: column;
+    padding:10px 0 0 5px;
+    color:#082676;
+}
+
+.btn {
+    font-size:14px;
+    text-decoration:none;
+    margin:4px 2px;
+}
+.btn:hover {
+    background:#3cb0fd;
+    text-decoration:none;
+}
+
+.wikipedia-container {
+    position:absolute;
+    float:left;
+    top:110px;
+    width:360px;
+    padding-left:20px;
+    background-color:#FFF;
+    color:#082676;
+    font-weight:700;
+    opacity:0.8;
+    z-index:11;
+    margin:0;
+}
+
+#wikipedia-header {
+    font-weight: bold;
+}
+
+@media only screen /* Smartphones */
+and (min-device-width : 320px) 
+and (max-device-width : 480px) {
+    p {
+        font-size: 80%;
+    }
+    #map {
+        max-width: 100%;
+        max-height: 390px;
+        padding-top: 2px;
+    }
+    ul {
+        flex-flow: row wrap;
+        flex-shrink: 4;
+        padding-top: 5px;
+    }
+    .wikipedia-container {
+        max-width: 70%;
+        max-height: 50px;
+    }
+    .location-search {
+        font-size: 80%;
+    }
+}
+
+@media only screen /* IPads */
+and (min-device-width : 768px) 
+and (max-device-width : 1024px) {
+    p {
+        font-size: 18px;
+    }
+    #map {
+        max-width: 100%;
+        max-height: 540px;
+    }
+    .wikipedia-container {
+        padding-top: 10px;
+        font-size: 80%;
+        max-width: 60%;
+        max-height: 75px;
+    }
+}
