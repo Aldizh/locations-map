@@ -8,7 +8,7 @@
 
 2. Open index.html file in your local browser
 
-### Resources for optimization tips and tricks
+### Resources
 * [Initial Data Setup](/http://www.discovery.com/tv-shows/north-america/top-10/natural-wonders/ "american natural wonders")
 * [Knockout JS Framework](http://knockoutjs.com/ "Official Knockout Documentation")
 * [Google Maps API](http://www.w3schools.com/googleapi/google_maps_basic.asp/ "Google Maps API tutorial")

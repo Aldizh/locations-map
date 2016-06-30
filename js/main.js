@@ -36,20 +36,24 @@ var locations = [
   ]
 ];
 
+// Store the search value for the filter query.
+var searchValue = (" ");
+
 function init() {
   var mapDiv = document.getElementById('map');
   vm.map = new google.maps.Map(mapDiv, {
-   center: {
-       lat: 37.42516,
-       lng: -115.82499
+    center: {
+      lat: 37.42516,
+      lng: -115.82499
    },
-   zoom: 6
+   zoom: 3
   });
+
+  // To hold information about a location
   vm.infowindow = new google.maps.InfoWindow({
     maxWidth: 240
   });
     
-  //For each function to  iterate through locations.
   vm.wonderList().forEach(function(wonder) {
     var marker = new google.maps.Marker({
       position: new google.maps.LatLng(wonder.lat(), wonder.lng()),
@@ -58,12 +62,12 @@ function init() {
     });
     wonder.marker = marker
     google.maps.event.addListener(marker, 'click', function() {
-      vm.select(wonder);
+      vm.select(wonder); // Show info window when user click on marker
     });
   });
 }
 
-//Animation for markers after loaded on the map. Direct click or list click will animate the markers for 1250ms.
+// Animation for markers
 var toggleBounce = function(marker) {
   if (marker.getAnimation() !== null) {
     marker.setAnimation(null);
@@ -72,17 +76,9 @@ var toggleBounce = function(marker) {
     marker.setAnimation(google.maps.Animation.BOUNCE);
     setTimeout(function() {
       marker.setAnimation(null);
-    }, 1250);
+    }, 1000);
   }
 };
-
-// Error handling for the Google Map api
-var googleError = function() {
-   alert('Unfortunately, Google Maps is currently unavailable.')
-};
-
-// Store the search value for the filter query.
-var searchValue = (" ");
 
 // Set up knockout observable object with given data
 var Wonder = function(data) {
@@ -94,6 +90,11 @@ var Wonder = function(data) {
     return this.lat() + "," + this.lng();
   }, this);
 }
+
+// Error handling for the Google Map api
+var googleError = function() {
+   alert('Unfortunately, Google Maps is currently unavailable.')
+};
 
 var ViewModel = function() {
   var self = this;
@@ -138,5 +139,6 @@ var ViewModel = function() {
      });
   }, self);
 };
+
 var vm = new ViewModel();
 ko.applyBindings(vm);
