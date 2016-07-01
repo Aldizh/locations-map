@@ -108,7 +108,7 @@ var getErrorMessage = function(jqXHR, exception) {
   } else {
     alert('Uncaught Error.\n' + jqXHR.responseText);
   }
-}
+};
 
 var ViewModel = function() {
   var self = this;
@@ -123,21 +123,23 @@ var ViewModel = function() {
   self.select = function(loc) {
     toggleBounce(loc.marker);
     var locName = loc.name();
-    var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + locName + '&format=json&callback=wikiCallback';
+    var wikiUrl = 'http://en.wikipeia.org/w/api.php?action=opensearch&search=' + locName + '&format=json&callback=wikiCallback';
     
-    $.ajax({
+    var request = $.ajax({
       url: wikiUrl,
       dataType: "jsonp",
       cache: "false",
-      success: function (response) {
-        var wikiList = response[1];
-        var windowContent = '<h6>Wikipedia</h6>' + '<h6><a href=http://en.wikipedia.org/wiki/"' + wikiList[0] + ' target="_blank"">' +  locName + '</a></h6>';
-        vm.infowindow.setContent(windowContent + loc.description());
-        vm.infowindow.open(vm.map, loc.marker);
-      },
-      error: function(jqXHR, exception) {
-        getErrorMessage(jqXHR, exception);
-      }
+    });
+
+    request.done(function(response) {
+      var wikiList = response[1];
+      var windowContent = '<h6>Wikipedia</h6>' + '<h6><a href=http://en.wikipedia.org/wiki/"' + wikiList[0] + ' target="_blank"">' +  locName + '</a></h6>';
+      vm.infowindow.setContent(windowContent + loc.description());
+      vm.infowindow.open(vm.map, loc.marker);
+    });
+
+    request.fail(function(jqXHR, exception) {
+      getErrorMessage(jqXHR, exception);
     });
   };
 
@@ -157,6 +159,11 @@ var ViewModel = function() {
 };
 
 var vm = new ViewModel();
+
+/* handling onerror function here, might need to use timeout so that alert can stay */
+var googleError = function() {
+  alert('Unfortunately, Google Maps is currently unavailable.');
+};
 
 /* Use strict mode to detect syntax, scope errors */
 (function() {
