@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Neighborhood map project</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <div class="container-fluid">
-        <div class="row">
+        <nav class="row">
             <div class="col-3">
                 <div class="location-search">
                     <form id="searchbox" name="searchbox">
-                        <input data-bind="textInput: searchValue, value: filter, valueUpdate: 'afterkeydown'" id="search" placeholder="Search Location" type="text">
+                        <input data-bind="textInput: searchValue, value: filter, valueUpdate: 'afterkeydown'" id="search" placeholder="Search Location" type="text"/>
                     </form>
                 </div>
                 <ul data-bind="foreach: filteredItems">
@@ -23,11 +23,11 @@
                 <p>American Natural Wonders</p>
                 <div id="map"></div>
             </div>
-        </div>
+        </nav>
     </div>
     <script src="js/libs/knockout-3.4.0.js"></script>
     <script src="js/main.js"></script>
     <script src="js/libs/jquery.min.js"></script>
-    <script async onerror="googleError()" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAD6HGzDWzuXW9bRlTLEtgWp5FNO0sUYxY&callback=init"></script>
+    <script async src="js/google_api_script.js"></script>
 </body>
 </html>

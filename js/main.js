@@ -60,11 +60,12 @@ function init() {
       animation: google.maps.Animation.DROP,
       map: vm.map
     });
-    wonder.marker = marker
+    wonder.marker = marker;
     google.maps.event.addListener(marker, 'click', function() {
       vm.select(wonder); // Show info window when user click on marker
     });
   });
+  ko.applyBindings(vm);
 }
 
 // Animation for markers
@@ -89,12 +90,25 @@ var Wonder = function(data) {
   this.LatLng = ko.computed(function() {
     return this.lat() + "," + this.lng();
   }, this);
-}
-
-// Error handling for the Google Map api
-var googleError = function() {
-   alert('Unfortunately, Google Maps is currently unavailable.')
 };
+
+var getErrorMessage = function(jqXHR, exception) {
+  if (jqXHR.status === 0) {
+    alert('Page not reachable.');
+  } else if (jqXHR.status == 404) {
+    alert('Requested page not found. [404]');
+  } else if (jqXHR.status == 500) {
+    alert('Internal Server Error [500].');
+  } else if (exception === 'parsererror') {
+    alert('Requested JSON parse failed.');
+  } else if (exception === 'timeout') {
+    alert('Time out error.');
+  } else if (exception === 'abort') {
+    alert('Ajax request aborted.');
+  } else {
+    alert('Uncaught Error.\n' + jqXHR.responseText);
+  }
+}
 
 var ViewModel = function() {
   var self = this;
@@ -107,24 +121,26 @@ var ViewModel = function() {
 
   // Function to bind to list for marker action.
   self.select = function(loc) {
-      toggleBounce(loc.marker);
-      var locName = loc.name();
-      var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + locName + '&format=json&callback=wikiCallback';
-      var wikiRequestTimeout = setTimeout(function() {
-        alert ("Unfortunately, Wikipedia is unavailable. Please try again later.");
-      }, 5000);
-      $.ajax({
-        url: wikiUrl,
-        dataType: "jsonp",
-        success: function (response) {
-          var wikiList = response[1];
-          var windowContent = '<h6>Wikipedia</h6>' + '<h6><a href=http://en.wikipedia.org/wiki/"' + wikiList[0] + '">' +  locName + '</a></h6>';
-          vm.infowindow.setContent(windowContent + loc.description());
-          vm.infowindow.open(vm.map, loc.marker);
-        }
-      });
-      clearTimeout(wikiRequestTimeout);
-  }
+    toggleBounce(loc.marker);
+    var locName = loc.name();
+    var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + locName + '&format=json&callback=wikiCallback';
+    
+    $.ajax({
+      url: wikiUrl,
+      dataType: "jsonp",
+      cache: "false",
+      success: function (response) {
+        var wikiList = response[1];
+        var windowContent = '<h6>Wikipedia</h6>' + '<h6><a href=http://en.wikipedia.org/wiki/"' + wikiList[0] + ' target="_blank"">' +  locName + '</a></h6>';
+        vm.infowindow.setContent(windowContent + loc.description());
+        vm.infowindow.open(vm.map, loc.marker);
+      },
+      error: function(jqXHR, exception) {
+        getErrorMessage(jqXHR, exception);
+      }
+    });
+  };
+
   //List and marker filter function using the search bar with userinput.
   self.filteredItems = ko.computed(function() {
     var listFilter = self.filter().toLowerCase();
@@ -141,4 +157,8 @@ var ViewModel = function() {
 };
 
 var vm = new ViewModel();
-ko.applyBindings(vm);
+
+/* Use strict mode to detect syntax, scope errors */
+(function() {
+  'use strict'; // turn on Strict Mode
+}());
